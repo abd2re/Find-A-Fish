@@ -1,55 +1,36 @@
 from fastapi import FastAPI
 from utils import PostingsDatabase
+from models import Posting, Poster
+from typing import Any
 
-app = FastAPI()
 
-user_id = 1
-postings_database: Po
+app: FastAPI = FastAPI()
+db: PostingsDatabase = PostingsDatabase()
+
+my_id = 1
 
 
 @app.get("/")
 @app.get("/postings")
-def show_postings():
-    return postings_database
+def show_postings() -> list[dict[str, Any]]:
+    return db.get_all_postings()
 
 
 @app.get("/postings/{id}")
-def show_posting(id: int):
-    posting: Posting = next(
-        filter(lambda posting: posting["id"] == id, postings_database)
-    )
-    return posting
+def show_posting(id: int) -> dict[str, Any]:
+    return db.get_posting(id)
 
 
 @app.get("/mypostings")
-def show_my_postings():
-    my_postings: list[Posting] = list(
-        filter(lambda posting: posting["author_id"] == user_id, postings_database)
-    )
-    return my_postings
+def show_my_postings() -> list[dict[str, Any]]:
+    return db.get_author_postings(my_id)
 
 
 @app.post("/mypostings")
-def create_posting(new_posting: Posting):
-    new_posting_dict = new_posting.model_dump()
-    new_posting_dict["id"] = randint(10000000, 99999999)
-    postings_database.append(new_posting_dict)
-    return new_posting_dict
+def add_posting(new_posting: Posting):
+    return db.add_posting(new_posting)
 
 
 @app.put("/mypostings/{id}")
-def create_posting(id: int, new_posting: Posting):
-    try:
-        old_posting: Posting = next(
-            filter(lambda posting: posting["id"] == id, postings_database)
-        )
-    except StopIteration:
-        raise HTTPException(status_code=404, detail="Post not found")
-
-    postings_database.remove(old_posting)
-
-    new_posting_dict = new_posting.model_dump()
-    new_posting_dict["id"] = id
-    postings_database.append(new_posting_dict)
-
-    return new_posting_dict
+def update_posting(id: int, new_posting: Posting):
+    return db.update_posting(id, new_posting)
