@@ -11,7 +11,7 @@ class PostingModel(BaseModel):
     author_id: int
     title: str
     embed: str
-    date_time: datetime | None = datetime.now()
+    date_time: datetime
     skills: list[str]
     location: tuple[str | None, str | None] = "International", None
     remote: bool | None = True

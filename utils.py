@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from typing import Any
 from random import randint
 
-PostingObject = dict[str, Any]
+type PostingObject = dict[str, Any]
 
 
 class PostingsDatabase:
@@ -23,6 +23,9 @@ class PostingsDatabase:
 
     def __repr__(self) -> str:
         return f"PostingsDatabase({self.__postings})"
+
+    def __sizeof__(self) -> int:
+        return len(self.__postings)
 
     def get_all_postings(self) -> list[PostingObject]:
         return self.__postings
@@ -91,6 +94,12 @@ class PosterDatabase:
         if not hasattr(self, "initialized"):
             self.initialized: bool = True
         self.__posters: list[PosterModel] = list()
+
+    def __repr__(self) -> str:
+        return f"PosterDatabase({self.__posters})"
+
+    def __sizeof__(self) -> int:
+        return len(self.__posters)
 
     def get_all_posters(self) -> list[PosterModel]:
         return self.__posters
