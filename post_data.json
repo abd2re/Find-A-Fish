@@ -1,0 +1,47 @@
+[
+  {
+    "author_id": 98387218,
+    "title": "Senior Python Developer",
+    "embed": "https://example.com/job/senior-python-developer",
+    "date_time": "2024-08-05T10:30:00",
+    "skills": ["Python", "Django", "REST APIs"],
+    "location": ["Remote", null],
+    "remote": true
+  },
+  {
+    "author_id": 91677944,
+    "title": "Frontend Engineer",
+    "embed": "https://example.com/job/frontend-engineer",
+    "date_time": "2024-08-05T11:00:00",
+    "skills": ["JavaScript", "React", "CSS"],
+    "location": ["San Francisco", "CA"],
+    "remote": false
+  },
+  {
+    "author_id": 98387218,
+    "title": "Data Scientist",
+    "embed": "https://example.com/job/data-scientist",
+    "date_time": "2024-08-05T09:45:00",
+    "skills": ["Python", "Machine Learning", "Data Analysis"],
+    "location": ["New York", "NY"],
+    "remote": true
+  },
+  {
+    "author_id": 91677944,
+    "title": "DevOps Engineer",
+    "embed": "https://example.com/job/devops-engineer",
+    "date_time": "2024-08-05T08:20:00",
+    "skills": ["AWS", "Docker", "Kubernetes"],
+    "location": ["International", null],
+    "remote": true
+  },
+  {
+    "author_id": 98387218,
+    "title": "Full Stack Developer",
+    "embed": "https://example.com/job/full-stack-developer",
+    "date_time": "2024-08-05T07:55:00",
+    "skills": ["Node.js", "React", "MongoDB"],
+    "location": ["Toronto", "ON"],
+    "remote": false
+  }
+]
