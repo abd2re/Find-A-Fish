@@ -1,5 +1,5 @@
 from __future__ import annotations
-from models import Posting, Poster
+from models import PostingModel, PosterModel
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import Any
@@ -42,15 +42,15 @@ class PostingsDatabase:
             filter(lambda posting: posting["author_id"] == author_id, self.__postings)
         )
 
-    def add_posting(self, posting: Posting) -> str:
+    def add_posting(self, posting: PostingModel) -> str:
         new_id: int = randint(10000000, 99999999)
         posting: PostingObject = self.add_id(new_id, posting)
         self.__postings.append(posting)
 
         return f"Posting with id {new_id} has been added."
 
-    def update_posting(self, posting_id: int, new_posting: Posting) -> str:
-        old_posting: Posting = self.get_posting(posting_id)
+    def update_posting(self, posting_id: int, new_posting: PostingModel) -> str:
+        old_posting: PostingModel = self.get_posting(posting_id)
         new_posting: PostingObject = self.add_id(posting_id, new_posting)
         self.__postings.remove(old_posting)
         self.__postings.append(new_posting)
@@ -58,13 +58,13 @@ class PostingsDatabase:
         return f"Posting with id {posting_id} has been updated."
 
     def delete_posting(self, posting_id: int) -> str:
-        posting: Posting = self.get_posting(posting_id)
+        posting: PostingModel = self.get_posting(posting_id)
         self.__postings.remove(posting)
 
         return f"Posting with id {posting_id} has been deleted."
 
     @staticmethod
-    def add_id(id: int, posting: Posting) -> PostingObject:
+    def add_id(id: int, posting: PostingModel) -> PostingObject:
         posting_dict: PostingObject = posting.model_dump()
         posting_dict["id"] = id
         return posting_dict
@@ -72,7 +72,7 @@ class PostingsDatabase:
     class ValidatePosting:
 
         @staticmethod
-        def author(posting: Posting, poster_database: PosterDatabase) -> bool:
+        def author(posting: PostingModel, poster_database: PosterDatabase) -> bool:
             author_id = posting.author_id
             if poster_database.get_poster_by_id(author_id):
                 return True
@@ -90,20 +90,20 @@ class PosterDatabase:
     def __init__(self) -> None:
         if not hasattr(self, "initialized"):
             self.initialized: bool = True
-        self.__posters: list[Poster] = list()
+        self.__posters: list[PosterModel] = list()
 
-    def get_all_posters(self) -> list[Poster]:
+    def get_all_posters(self) -> list[PosterModel]:
         return self.__posters
 
     def add_poster(self, username: str) -> str:
         new_id: int = randint(10000000, 99999999)
         self.__posters.append(
-            Poster.model_validate({"id": new_id, "username": username})
+            PosterModel.model_validate({"id": new_id, "username": username})
         )
 
         return f"Poster with id {new_id} has been added."
 
-    def get_poster_by_id(self, poster_id: int) -> Poster:
+    def get_poster_by_id(self, poster_id: int) -> PosterModel:
         try:
             return next(filter(lambda poster: poster.id == poster_id, self.__posters))
         except StopIteration:
@@ -111,7 +111,7 @@ class PosterDatabase:
                 status_code=404, detail=f"Poster with id {poster_id} not found"
             )
 
-    def get_poster_by_name(self, username: str) -> Poster:
+    def get_poster_by_name(self, username: str) -> PosterModel:
         try:
             return next(
                 filter(lambda poster: poster.username == username, self.__posters)

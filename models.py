@@ -2,12 +2,12 @@ from pydantic import BaseModel
 from datetime import datetime
 
 
-class Poster(BaseModel):
+class PosterModel(BaseModel):
     id: int
     username: str
 
 
-class Posting(BaseModel):
+class PostingModel(BaseModel):
     author_id: int
     title: str
     embed: str

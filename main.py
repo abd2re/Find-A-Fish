@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Query, HTTPException
 from utils import PostingsDatabase, PostingObject, PosterDatabase
-from models import Posting, Poster
+from models import PostingModel, PosterModel
 from typing import Any, Annotated
 
 
@@ -25,7 +25,7 @@ def get_posting(id: int):
 
 
 @app.post("/post")
-def add_posting(new_posting: Posting):
+def add_posting(new_posting: PostingModel):
     if postings_db.ValidatePosting.author(new_posting, posters_db):
         return postings_db.add_posting(new_posting)
     else:
@@ -33,7 +33,7 @@ def add_posting(new_posting: Posting):
 
 
 @app.put("/post")
-def update_posting(id: int, new_posting: Posting):
+def update_posting(id: int, new_posting: PostingModel):
     if postings_db.ValidatePosting.author(new_posting, posters_db):
         return postings_db.update_posting(id, new_posting)
     else:
@@ -55,7 +55,7 @@ def get_all_posters():
 @app.get("/posters/{username}")
 @app.get("/@{username}")
 def get_poster_postings(username: str):
-    poster: Poster = posters_db.get_poster_by_name(username)
+    poster: PosterModel = posters_db.get_poster_by_name(username)
     return postings_db.get_author_postings(poster.id)
 
 
@@ -68,6 +68,6 @@ def add_poster(new: Annotated[str, Query(pattern="^[A-Za-z0-9_]{4,15}$")]):
 
 
 @app.post("/postmany")
-def add_posting(postings: list[Posting]):
+def add_posting(postings: list[PostingModel]):
     for new_posting in postings:
         postings_db.add_posting(new_posting)
