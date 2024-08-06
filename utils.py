@@ -44,21 +44,21 @@ class PostingsDatabase:
 
     def add_posting(self, posting: PostingModel) -> str:
         new_id: int = randint(10000000, 99999999)
-        posting: PostingObject = self.add_id(new_id, posting)
-        self.__postings.append(posting)
+        new_posting: PostingObject = self.add_id(new_id, posting)
+        self.__postings.append(new_posting)
 
         return f"Posting with id {new_id} has been added."
 
-    def update_posting(self, posting_id: int, new_posting: PostingModel) -> str:
-        old_posting: PostingModel = self.get_posting(posting_id)
-        new_posting: PostingObject = self.add_id(posting_id, new_posting)
+    def update_posting(self, posting_id: int, posting: PostingModel) -> str:
+        old_posting: PostingObject = self.get_posting(posting_id)
+        new_posting: PostingObject = self.add_id(posting_id, posting)
         self.__postings.remove(old_posting)
         self.__postings.append(new_posting)
 
         return f"Posting with id {posting_id} has been updated."
 
     def delete_posting(self, posting_id: int) -> str:
-        posting: PostingModel = self.get_posting(posting_id)
+        posting: PostingObject = self.get_posting(posting_id)
         self.__postings.remove(posting)
 
         return f"Posting with id {posting_id} has been deleted."
